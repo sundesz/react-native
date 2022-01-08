@@ -1,21 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { NativeRouter } from 'react-router-native';
 
-export default function App() {
+import Main from './src/Main';
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Sandesh Hyoju</Text>
+    <>
+      <NativeRouter>
+        <Main />
+      </NativeRouter>
       <StatusBar style="auto" />
-    </View>
+    </>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+// });
