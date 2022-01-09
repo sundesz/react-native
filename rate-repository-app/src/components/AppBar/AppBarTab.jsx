@@ -1,9 +1,12 @@
+import { useQuery } from '@apollo/client';
 import React from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
-import { Link } from 'react-router-native';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
+import { IS_USER_LOGGED_IN } from '../../graphql/queries';
+import useSignOut from '../../hooks/useSignOut';
 import Text from '../Text';
+import AppBarTabLink from './AppBarTabLink';
 
-const styles = StyleSheet.create({
+export const appBarStyles = StyleSheet.create({
   appBarContainer: {
     flexDirection: 'row',
   },
@@ -21,15 +24,22 @@ const styles = StyleSheet.create({
 });
 
 const AppBarTab = () => {
-  const osStyle = [styles.text, styles.os];
+  const { data } = useQuery(IS_USER_LOGGED_IN);
+  const [signOut] = useSignOut();
+
+  const osStyle = [appBarStyles.text, appBarStyles.os];
+
   return (
-    <View style={styles.appBarContainer}>
-      <Link to="/">
-        <Text style={styles.text}>Repositories</Text>
-      </Link>
-      <Link to="/signin">
-        <Text style={styles.text}>Sign In</Text>
-      </Link>
+    <View style={appBarStyles.appBarContainer}>
+      <AppBarTabLink name="Repositories" link="/" />
+
+      {data.authorizedUser ? (
+        <Pressable onPress={signOut}>
+          <Text style={appBarStyles.text}>Sign Out</Text>
+        </Pressable>
+      ) : (
+        <AppBarTabLink name="Sign In" link="/signin" />
+      )}
 
       <Text style={osStyle}>{Platform.OS}</Text>
     </View>
