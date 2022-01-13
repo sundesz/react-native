@@ -1,38 +1,15 @@
-import { Formik } from 'formik';
 import React from 'react';
-import SignInForm from './SignInForm';
-import * as Yup from 'yup';
 import useSignIn from '../../hooks/useSignIn';
 import { useHistory } from 'react-router-native';
-import Text from '../Text';
 import { StyleSheet, View } from 'react-native';
-import theme from '../../theme';
-
-const initialValues = {
-  username: '',
-  password: '',
-};
-
-const validationSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(3, 'Username must be greater or equal to 3')
-    .required('Username is required'),
-  password: Yup.string()
-    .min(3, 'Password must be greater or equal to 3')
-    .required('Password is required'),
-});
+import SignInContainer from './SignInContainer';
+import ErrorComponent from '../helpers/ErrorComponent';
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     paddingTop: 10,
     paddingHorizontal: 20,
-  },
-  errorText: {
-    marginTop: 5,
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: theme.colors.error,
   },
 });
 
@@ -54,20 +31,9 @@ const SignIn = () => {
   return (
     <>
       <View style={styles.container}>
-        {error && (
-          <Text style={styles.errorText}>{`${error.replace(
-            'SignInError:',
-            ''
-          )}`}</Text>
-        )}
+        {error && <ErrorComponent errorMessage={error} />}
       </View>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={submitHandler}
-      >
-        {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
-      </Formik>
+      <SignInContainer submitHandler={submitHandler} />
     </>
   );
 };

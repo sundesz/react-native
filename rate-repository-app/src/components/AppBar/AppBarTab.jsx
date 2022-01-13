@@ -1,20 +1,21 @@
 import { useQuery } from '@apollo/client';
 import React from 'react';
 import { Platform, Pressable, StyleSheet, View } from 'react-native';
-import { IS_USER_LOGGED_IN } from '../../graphql/queries';
+import { GET_AUTHORIZED_USER } from '../../graphql/queries';
 import useSignOut from '../../hooks/useSignOut';
-import Text from '../Text';
+import Text from '../helpers/Text';
 import AppBarTabLink from './AppBarTabLink';
 
 export const appBarStyles = StyleSheet.create({
   appBarContainer: {
     flexDirection: 'row',
+    marginLeft: 10,
   },
   text: {
     fontSize: 24,
     fontWeight: '900',
     paddingVertical: 20,
-    paddingHorizontal: 5,
+    paddingRight: 20,
     color: '#fff',
   },
   os: {
@@ -24,24 +25,35 @@ export const appBarStyles = StyleSheet.create({
 });
 
 const AppBarTab = () => {
-  const { data } = useQuery(IS_USER_LOGGED_IN);
+  const { data } = useQuery(GET_AUTHORIZED_USER);
   const [signOut] = useSignOut();
 
   const osStyle = [appBarStyles.text, appBarStyles.os];
+
+  const UserMenu = () => (
+    <>
+      <AppBarTabLink name="Create a review" link="/createreview" />
+      <AppBarTabLink name="My reviews" link="/myreviews" />
+      <Pressable onPress={signOut}>
+        <Text style={appBarStyles.text}>Sign Out</Text>
+      </Pressable>
+      <Text style={osStyle}>Welcome {data.authorizedUser.username}</Text>
+    </>
+  );
+
+  const GeneralMenu = () => (
+    <>
+      <AppBarTabLink name="Sign in" link="/signin" />
+      <AppBarTabLink name="Sign up" link="/signup" />
+      <Text style={osStyle}>{Platform.OS}</Text>
+    </>
+  );
 
   return (
     <View style={appBarStyles.appBarContainer}>
       <AppBarTabLink name="Repositories" link="/" />
 
-      {data.authorizedUser ? (
-        <Pressable onPress={signOut}>
-          <Text style={appBarStyles.text}>Sign Out</Text>
-        </Pressable>
-      ) : (
-        <AppBarTabLink name="Sign In" link="/signin" />
-      )}
-
-      <Text style={osStyle}>{Platform.OS}</Text>
+      {data?.authorizedUser ? <UserMenu /> : <GeneralMenu />}
     </View>
   );
 };

@@ -1,42 +1,33 @@
 import React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
 import useRepositories from '../../hooks/useRepositories';
-import Text from '../Text';
-import RepositoryItem from './RepositoryItem';
-
-const styles = StyleSheet.create({
-  separator: {
-    height: 10,
-  },
-});
-
-const ItemSeparator = () => <View style={styles.separator} />;
+import RepositoryListContainer from './RepositoryListContainer';
+import ErrorComponent from '../helpers/ErrorComponent';
 
 const RepositoryList = () => {
-  const { repositories, loading, error } = useRepositories();
+  const { repositories, loading, error, refetch, fetchMore } = useRepositories({
+    first: 8,
+  });
 
-  const repositoryNodes = repositories
-    ? repositories.edges.map((edge) => edge.node)
-    : [];
-
-  const renderItem = ({ item }) => <RepositoryItem repository={item} />;
+  // #https://www.apollographql.com/docs/react/data/queries/#inspecting-loading-states
+  // if (result.networkStatus === NetworkStatus.refetch) console.log('refetching');
 
   if (loading) {
-    return (
-      <View>
-        <Text>Loading ...</Text>
-      </View>
-    );
+    return null;
   }
 
-  if (error) return `Error! ${error}`;
+  if (error) {
+    return <ErrorComponent errorMessage={error} />;
+  }
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (
-    <FlatList
-      data={repositoryNodes}
-      ItemSeparatorComponent={ItemSeparator}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
+    <RepositoryListContainer
+      repositories={repositories}
+      refetch={refetch}
+      onEndReach={onEndReach}
     />
   );
 };

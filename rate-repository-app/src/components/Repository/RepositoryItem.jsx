@@ -1,15 +1,13 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import theme from '../../theme';
-import Text from '../Text';
+import Text from '../helpers/Text';
 
 import RepositoryItemCount from './RepositoryItemCount';
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    flex: 1,
-    justifyContent: 'center',
     padding: 20,
   },
   row_1_Container: {
@@ -62,18 +60,23 @@ const RepositoryItem = ({ repository }) => {
           />
         </View>
         <View style={styles.infoContainer}>
-          <Text fontWeight="bold" fontSize="heading">
+          <Text fontWeight="bold" fontSize="heading" testID="fullName">
             {repository.fullName}
           </Text>
           <Text
             color="textSecondary"
             fontSize="subheading"
             style={styles.description}
+            testID="description"
           >
             {repository.description}
           </Text>
           <View style={styles.languageView}>
-            <Text fontSize="subheading" style={styles.language}>
+            <Text
+              fontSize="subheading"
+              style={styles.language}
+              testID="language"
+            >
               {repository.language}
             </Text>
           </View>
@@ -83,15 +86,22 @@ const RepositoryItem = ({ repository }) => {
         <RepositoryItemCount
           countNumber={repository.stargazersCount}
           name="Stars"
+          testID="stargazersCount"
         />
-        <RepositoryItemCount countNumber={repository.forksCount} name="Forks" />
+        <RepositoryItemCount
+          countNumber={repository.forksCount}
+          name="Forks"
+          testID="forksCount"
+        />
         <RepositoryItemCount
           countNumber={repository.reviewCount}
           name="Reviews"
+          testID="reviewCount"
         />
         <RepositoryItemCount
           countNumber={repository.ratingAverage}
           name="Rating"
+          testID="ratingAverage"
         />
       </View>
     </View>

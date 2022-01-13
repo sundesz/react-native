@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-native';
-import Text from '../Text';
+import Text from '../helpers/Text';
 import { appBarStyles } from './AppBarTab';
 
 const AppBarTabLink = ({ name, link }) => {

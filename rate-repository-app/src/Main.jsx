@@ -6,6 +6,10 @@ import theme from './theme';
 import AppBar from './components/AppBar';
 import SignIn from './components/SignIn';
 import RepositoryList from './components/Repository/RepositoryList';
+import SingleRepository from './components/Repository/SingleRepository';
+import CreateReview from './components/Review/CreateReview';
+import SignUp from './components/SignUp';
+import ReviewList from './components/Review/ReviewList';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,8 +28,23 @@ const App = () => {
         <Route path="/" exact>
           <RepositoryList />
         </Route>
+        <Route path="/repositories/:id">
+          <SingleRepository />
+        </Route>
+        <Route path="/repositories">
+          <RepositoryList />
+        </Route>
         <Route path="/signin">
           <SignIn />
+        </Route>
+        <Route path="/signup">
+          <SignUp />
+        </Route>
+        <Route path="/createreview">
+          <CreateReview />
+        </Route>
+        <Route path="/myreviews">
+          <ReviewList />
         </Route>
         <Redirect to="/" />
       </Switch>
@@ -35,12 +54,3 @@ const App = () => {
 };
 
 export default App;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });

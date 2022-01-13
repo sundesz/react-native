@@ -1,8 +1,8 @@
 import { useField } from 'formik';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import theme from '../theme';
-import Text from './Text';
+import theme from '../../theme';
+import Text from '../helpers/Text';
 import TextInput from './TextInput';
 
 const styles = StyleSheet.create({
